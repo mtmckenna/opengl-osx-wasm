@@ -1,2 +1,2 @@
 
-g++ app.cpp -std=c++11 -lglew -lsdl2 -F/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator.sdk/System/Library/Frameworks/ -framework OpenGLES -g -v -o native/app
+g++ app.cpp -std=c++11 -lglew -lsdl2 -framework OpenGL -g -v -o native/app
