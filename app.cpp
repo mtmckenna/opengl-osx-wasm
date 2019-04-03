@@ -4,8 +4,10 @@
 
 #define GLEW_STATIC
 #include <GL/glew.h>
-#include <string>
 #include <SDL2/SDL.h>
+
+#include <iostream>
+#include <string>
 
 #define SCREEN_WIDTH  400
 #define SCREEN_HEIGHT 300
