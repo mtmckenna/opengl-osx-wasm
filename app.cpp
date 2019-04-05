@@ -22,8 +22,9 @@ static float attributes[] = {
 };
 static GLuint length_of_attributes = sizeof(attributes) / sizeof(attributes[0]);
 static GLuint previous_ticks = 0;
-static GLuint max_fps = 15;
-static GLfloat rotation_angle = -0.05;
+static GLuint max_fps = 16;
+static GLfloat lag = 0;
+static GLfloat rotation_angle = -0.01;
 static GLuint vbo;
 
 static const char *vertexSource = R"glsl(
@@ -57,11 +58,12 @@ int loop(void *arg)
 #endif
 {
   GLuint ticks = SDL_GetTicks();
-  GLuint elapsed_ticks = (ticks - previous_ticks);
+  lag += ticks - previous_ticks;
+  previous_ticks = ticks;
 
-  if (elapsed_ticks > max_fps)
+  while (lag > max_fps)
   {
-    previous_ticks = ticks;
+    lag -= max_fps;
     for (int i = 0; i < length_of_attributes; i = i + 5)
     {
       float x = attributes[i];
@@ -70,9 +72,10 @@ int loop(void *arg)
       attributes[i]     = x * std::cosf(rotation_angle) - y * std::sinf(rotation_angle);
       attributes[i + 1] = y * std::cosf(rotation_angle) + x * std::sinf(rotation_angle);
     }
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(attributes), attributes, GL_DYNAMIC_DRAW);
   }
 
-  glBufferData(GL_ARRAY_BUFFER, sizeof(attributes), attributes, GL_DYNAMIC_DRAW);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glDrawArrays(GL_TRIANGLES, 0, 3);
   SDL_GL_SwapWindow(window);
