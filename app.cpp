@@ -51,11 +51,7 @@ void main()
 }
 )glsl";
 
-#if __EMSCRIPTEN__
 void loop(void *arg)
-#else
-int loop(void *arg)
-#endif
 {
   GLuint ticks = SDL_GetTicks();
   lag += ticks - previous_ticks;
@@ -79,10 +75,6 @@ int loop(void *arg)
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glDrawArrays(GL_TRIANGLES, 0, 3);
   SDL_GL_SwapWindow(window);
-
-  #if !__EMSCRIPTEN__
-  return 0;
-  #endif
 }
 
 int main()
