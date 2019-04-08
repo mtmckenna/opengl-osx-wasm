@@ -51,7 +51,7 @@ void main()
 }
 )glsl";
 
-void loop(void *arg)
+void loop()
 {
   GLuint ticks = SDL_GetTicks();
   lag += ticks - previous_ticks;
@@ -60,7 +60,7 @@ void loop(void *arg)
   while (lag > max_fps)
   {
     lag -= max_fps;
-    for (int i = 0; i < length_of_attributes; i = i + 5)
+    for (GLuint i = 0; i < length_of_attributes; i = i + 5)
     {
       float x = attributes[i];
       float y = attributes[i + 1];
@@ -147,7 +147,7 @@ int main()
   glClearColor(1.0, 1.0, 1.0, 0.0);
 
   #if __EMSCRIPTEN__
-  emscripten_set_main_loop_arg(loop, NULL, -1, 1);
+  emscripten_set_main_loop(loop, -1, 1);
   #else
   SDL_Event windowEvent;
   while (true)
@@ -156,7 +156,7 @@ int main()
     {
       if (windowEvent.type == SDL_QUIT) break;
     }
-    loop(NULL);
+    loop();
   }
   #endif
 
